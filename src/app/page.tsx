@@ -14,7 +14,6 @@ import {
   Calendar,
   Users
 } from "lucide-react";
-import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
@@ -95,7 +94,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative font-sans">
-      <TopBar />
       <Navbar />
 
       {/* Floating WhatsApp CTA */}

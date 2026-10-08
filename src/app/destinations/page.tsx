@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Bookmark, BookmarkCheck, MapPin, GraduationCap, Building2 } from "lucide-react";
+import { Bookmark, BookmarkCheck, MapPin, GraduationCap, Building2, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  hidden: { opacity: 0, y: 50, filter: "blur(10px)" },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.32, 0.72, 0, 1] } }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    transition: { staggerChildren: 0.15 }
   }
 };
 
@@ -81,101 +81,115 @@ export default function DestinationsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-light">
-      <TopBar />
+    <main className="min-h-[100dvh] bg-white">
       <Navbar />
 
       {/* Hero Header */}
-      <div className="bg-primary py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
+      <div className="bg-primary pt-40 pb-24 lg:pt-52 lg:pb-32 relative overflow-hidden rounded-b-[3rem] lg:rounded-b-[4rem]">
+        <div className="absolute inset-0 opacity-10 mix-blend-overlay">
           <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2000&auto=format&fit=crop" alt="Background" className="w-full h-full object-cover" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-heading text-4xl md:text-5xl font-bold text-white mb-6"
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+            className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/70 text-xs font-bold uppercase tracking-widest mb-8"
           >
-            Choose Your <span className="text-accent">Dream Destination</span>
+            Global Opportunities
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
+            className="font-heading text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-[1.1]"
+          >
+            Choose Your <br className="hidden md:block"/> <span className="text-white/40">Dream Destination</span>
           </motion.h1>
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-300 text-lg max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.32, 0.72, 0, 1] }}
+            className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto font-medium"
           >
-            Explore world-class educational hubs. Compare opportunities, lifestyle, and post-study work rights to make an informed decision for your future.
+            Explore world-class educational hubs. Compare opportunities, lifestyle, and post-study work rights.
           </motion.p>
         </div>
       </div>
 
       {/* Destinations List */}
-      <div className="py-20">
+      <div className="py-24 lg:py-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-16">
+          <div className="space-y-24">
             {DETAILED_DESTINATIONS.map((dest, index) => (
               <motion.div 
                 key={dest.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={staggerContainer}
-                className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow`}
+                initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+                className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 lg:gap-20 items-center`}
               >
-                {/* Image Section */}
-                <motion.div variants={fadeInUp} className="w-full lg:w-1/2 relative rounded-2xl overflow-hidden h-[400px]">
-                  <img src={dest.image} alt={dest.name} className="w-full h-full object-cover" />
-                  
-                  {isMounted && (
-                    <button 
-                      onClick={() => toggleSave(dest.id)}
-                      className="absolute top-4 right-4 z-10 p-3 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:scale-110 transition text-gray-700"
-                    >
-                      {savedDestinations.includes(dest.id) ? <BookmarkCheck size={24} className="text-accent" /> : <Bookmark size={24} />}
-                    </button>
-                  )}
-                  
-                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-lg font-heading font-bold text-primary flex items-center gap-2">
-                    <MapPin size={18} className="text-accent" /> {dest.name}
+                {/* Image Section (Double Bezel) */}
+                <motion.div variants={fadeInUp} className="w-full lg:w-1/2">
+                  <div className="p-2 bg-gray-50/50 ring-1 ring-black/5 rounded-[2.5rem]">
+                    <div className="relative rounded-[calc(2.5rem-0.5rem)] overflow-hidden h-[400px] lg:h-[500px] shadow-[inset_0_1px_1px_rgba(255,255,255,1)]">
+                      <img src={dest.image} alt={dest.name} className="w-full h-full object-cover" />
+                      
+                      {isMounted && (
+                        <button 
+                          onClick={() => toggleSave(dest.id)}
+                          className="absolute top-6 right-6 z-10 w-12 h-12 flex items-center justify-center bg-white/80 backdrop-blur-md rounded-full shadow-lg hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] text-primary"
+                        >
+                          {savedDestinations.includes(dest.id) ? <BookmarkCheck size={24} className="text-accent" /> : <Bookmark size={24} />}
+                        </button>
+                      )}
+                      
+                      <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-xl px-5 py-3 rounded-2xl font-heading font-bold text-primary flex items-center gap-3 shadow-xl">
+                        <MapPin size={20} className="text-accent" /> {dest.name}
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
                 {/* Content Section */}
-                <motion.div variants={fadeInUp} className="w-full lg:w-1/2 px-4 lg:px-8">
-                  <h2 className="font-heading text-3xl font-bold text-primary mb-4">{dest.name}</h2>
-                  <p className="text-gray-600 mb-8 text-lg leading-relaxed">{dest.description}</p>
+                <motion.div variants={fadeInUp} className="w-full lg:w-1/2">
+                  <h2 className="font-heading text-4xl lg:text-5xl font-extrabold text-primary mb-6 tracking-tight">{dest.name}</h2>
+                  <p className="text-gray-500 mb-10 text-lg leading-relaxed">{dest.description}</p>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                    <div className="bg-light p-4 rounded-xl text-center border border-gray-50">
-                      <div className="text-accent font-bold text-xl mb-1">{dest.stats.universities}</div>
-                      <div className="text-xs text-gray-500 font-medium uppercase tracking-wider">Universities</div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                    <div className="p-1.5 bg-gray-50 rounded-3xl ring-1 ring-black/5">
+                      <div className="bg-white p-5 rounded-[calc(1.5rem-0.375rem)] text-center h-full shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
+                        <div className="text-primary font-bold text-2xl mb-1">{dest.stats.universities}</div>
+                        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Universities</div>
+                      </div>
                     </div>
-                    <div className="bg-light p-4 rounded-xl text-center border border-gray-50">
-                      <div className="text-accent font-bold text-xl mb-1">{dest.stats.students}</div>
-                      <div className="text-xs text-gray-500 font-medium uppercase tracking-wider">Intl. Students</div>
+                    <div className="p-1.5 bg-gray-50 rounded-3xl ring-1 ring-black/5">
+                      <div className="bg-white p-5 rounded-[calc(1.5rem-0.375rem)] text-center h-full shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
+                        <div className="text-primary font-bold text-2xl mb-1">{dest.stats.students}</div>
+                        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Intl. Students</div>
+                      </div>
                     </div>
-                    <div className="bg-light p-4 rounded-xl text-center border border-gray-50">
-                      <div className="text-accent font-bold text-xl mb-1">{dest.stats.workRights}</div>
-                      <div className="text-xs text-gray-500 font-medium uppercase tracking-wider">Work Rights</div>
+                    <div className="p-1.5 bg-gray-50 rounded-3xl ring-1 ring-black/5">
+                      <div className="bg-white p-5 rounded-[calc(1.5rem-0.375rem)] text-center h-full shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
+                        <div className="text-primary font-bold text-2xl mb-1">{dest.stats.workRights}</div>
+                        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Work Rights</div>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mb-8">
-                    <h4 className="font-heading font-semibold text-primary mb-3 flex items-center gap-2">
-                      <GraduationCap size={20} className="text-gray-400" />
-                      Popular Universities
+                  <div className="mb-10">
+                    <h4 className="font-heading font-bold text-primary mb-4 flex items-center gap-3 text-lg">
+                      <div className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center">
+                        <GraduationCap size={16} className="text-primary" />
+                      </div>
+                      Top Institutions
                     </h4>
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                       {dest.topUnis.map((uni, i) => (
-                        <li key={i} className="flex items-center gap-3 text-gray-600">
-                          <Building2 size={16} className="text-accent/60" />
+                        <li key={i} className="flex items-center gap-4 text-gray-500 font-medium bg-gray-50/50 p-3 rounded-2xl">
+                          <Building2 size={18} className="text-gray-400" />
                           {uni}
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <button className="bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-800 transition shadow-lg shadow-gray-200">
+                  <button className="group relative inline-flex items-center justify-between gap-6 bg-primary text-white p-2 pr-8 rounded-full font-bold text-base hover:bg-gray-900 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]">
+                    <span className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 group-hover:translate-x-1">
+                      <ArrowRight size={20} />
+                    </span>
                     View Programs in {dest.name}
                   </button>
                 </motion.div>
