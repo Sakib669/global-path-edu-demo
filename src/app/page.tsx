@@ -1,8 +1,10 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, ArrowRight, Bookmark, BookmarkCheck } from "lucide-react";
+import { ArrowRight, Bookmark, BookmarkCheck } from "lucide-react";
+import { TopBar } from "@/components/TopBar";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import Link from "next/link";
 
 // --- Seed Data ---
 const DESTINATIONS = [
@@ -87,36 +89,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Top Bar */}
-      <div className="bg-primary text-white text-sm py-2 px-4 md:px-8 flex justify-between items-center">
-        <div className="flex space-x-4 items-center">
-          <span className="flex items-center gap-2"><Phone size={14} /> +880 1234 567 890</span>
-          <span className="hidden md:flex items-center gap-2"><Mail size={14} /> info@globalpath.example.com</span>
-        </div>
-        <div className="flex space-x-4 items-center">
-          <a href="#" className="hover:text-accent transition">Facebook</a>
-          <a href="#" className="hover:text-accent transition">LinkedIn</a>
-        </div>
-      </div>
-
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <span className="font-heading font-bold text-2xl text-primary">Global<span className="text-accent">Path</span></span>
-            </div>
-            <div className="hidden md:flex space-x-8 items-center font-medium">
-              <a href="#" className="text-primary hover:text-accent transition">Home</a>
-              <a href="#destinations" className="text-gray-600 hover:text-accent transition">Destinations</a>
-              <a href="#process" className="text-gray-600 hover:text-accent transition">Our Process</a>
-              <button className="bg-accent text-white px-6 py-2.5 rounded-full font-semibold hover:bg-red-700 transition shadow-lg shadow-red-200">
-                Free Consultation
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <TopBar />
+      <Navbar />
 
       {/* Hero Section */}
       <div className="hero-pattern min-h-[600px] flex items-center">
@@ -137,12 +111,16 @@ export default function Home() {
               Expert guidance for studying abroad. From choosing the right course to securing your visa, we&apos;re with you every step of the way.
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-accent text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-red-700 transition shadow-xl shadow-red-900/20 text-center">
-                Apply for 2026 Intake
-              </button>
-              <button className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition text-center">
-                Explore Courses
-              </button>
+              <Link href="/consultation">
+                <button className="bg-accent text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-red-700 transition shadow-xl shadow-red-900/20 text-center">
+                  Apply for 2026 Intake
+                </button>
+              </Link>
+              <Link href="/destinations">
+                <button className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition text-center">
+                  Explore Courses
+                </button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
@@ -197,7 +175,7 @@ export default function Home() {
                 <div className="absolute bottom-0 left-0 p-6 w-full z-10">
                   <h3 className="text-white font-heading font-bold text-2xl mb-1">{dest.name}</h3>
                   <p className="text-gray-300 text-sm mb-4">{dest.subtitle}</p>
-                  <span className="text-accent font-medium flex items-center group-hover:text-white transition">Explore Programs <ArrowRight size={16} className="ml-2" /></span>
+                  <Link href="/destinations" className="text-accent font-medium flex items-center group-hover:text-white transition">Explore Programs <ArrowRight size={16} className="ml-2" /></Link>
                 </div>
               </motion.div>
             ))}
@@ -243,27 +221,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer CTA */}
-      <section className="py-20 bg-primary text-white text-center">
-        <motion.div 
-          initial="hidden" whileInView="visible" viewport={{ once: true }}
-          variants={fadeInUp}
-          className="max-w-4xl mx-auto px-4"
-        >
-          <h2 className="font-heading text-4xl font-bold mb-6">Ready to Take the Next Step?</h2>
-          <p className="text-gray-300 mb-10 text-lg">Book a free session with our expert counselors and map out your educational future today.</p>
-          <button className="bg-accent text-white px-10 py-4 rounded-full font-semibold text-xl hover:bg-red-700 transition shadow-lg shadow-red-900/50">
-            Book Free Consultation
-          </button>
-        </motion.div>
-      </section>
-
-      <footer className="bg-[#071530] text-gray-400 py-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <span className="font-heading font-bold text-2xl text-white mb-4 block">Global<span className="text-accent">Path</span></span>
-          <p>© 2026 GlobalPath Consultancy. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
