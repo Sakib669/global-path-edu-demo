@@ -27,20 +27,33 @@ export default function ConsultationPage() {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    setTimeout(() => {
-      const existing = localStorage.getItem("consultations");
-      const consultations = existing ? JSON.parse(existing) : [];
-      consultations.push({ ...formData, date: new Date().toISOString() });
-      localStorage.setItem("consultations", JSON.stringify(consultations));
+    const submitData = new FormData();
+    submitData.append("name", formData.name);
+    submitData.append("email", formData.email);
+    submitData.append("phone", formData.phone);
+    submitData.append("country", formData.destination);
+    submitData.append("course", formData.level); // mapped to course in action
+    submitData.append("message", formData.message);
+
+    try {
+      const { submitInquiry } = await import("@/app/actions/inquiry");
+      const result = await submitInquiry(submitData);
       
+      if (result?.error) {
+        alert(result.error);
+      } else {
+        setIsSuccess(true);
+        setFormData({ name: "", email: "", phone: "", destination: "", level: "", message: "" });
+      }
+    } catch (error) {
+      alert("Something went wrong");
+    } finally {
       setIsSubmitting(false);
-      setIsSuccess(true);
-      setFormData({ name: "", email: "", phone: "", destination: "", level: "", message: "" });
-    }, 1500);
+    }
   };
 
   return (

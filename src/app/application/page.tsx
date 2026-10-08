@@ -16,7 +16,7 @@ export default function ApplicationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (step < 3) {
       setStep(step + 1);
@@ -24,10 +24,20 @@ export default function ApplicationPage() {
     }
     
     setIsSubmitting(true);
-    setTimeout(() => {
+    const formData = new FormData(e.currentTarget);
+    try {
+      const { submitApplication } = await import("@/app/actions/application");
+      const result = await submitApplication(formData);
+      if (result?.error) {
+        alert(result.error);
+      } else {
+        setIsSuccess(true);
+      }
+    } catch (error) {
+      alert("Something went wrong");
+    } finally {
       setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 2000);
+    }
   };
 
   return (
@@ -78,34 +88,31 @@ export default function ApplicationPage() {
                   {step === 1 && (
                     <div className="space-y-6">
                       <h4 className="font-heading text-xl font-bold text-primary mb-6">Personal Information</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input required type="text" placeholder="First Name" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
-                        <input required type="text" placeholder="Last Name" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
-                      </div>
-                      <input required type="email" placeholder="Email Address" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
-                      <input required type="tel" placeholder="Phone Number" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
+                      <input required name="studentName" type="text" placeholder="Full Name" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
+                      <input required name="email" type="email" placeholder="Email Address" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
+                      <input required name="phone" type="tel" placeholder="Phone Number" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
                     </div>
                   )}
 
                   {step === 2 && (
                     <div className="space-y-6">
                       <h4 className="font-heading text-xl font-bold text-primary mb-6">Academic & Preferences</h4>
-                      <select required className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm cursor-pointer appearance-none">
+                      <select name="academicInfo" required className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm cursor-pointer appearance-none">
                         <option value="">Highest Qualification</option>
                         <option value="highschool">High School / A-Levels</option>
                         <option value="bachelors">Bachelor&apos;s Degree</option>
                         <option value="masters">Master&apos;s Degree</option>
                       </select>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <select required className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm cursor-pointer appearance-none">
+                        <select name="countryPreference" required className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm cursor-pointer appearance-none">
                           <option value="">Target Country</option>
                           <option value="uk">United Kingdom</option>
                           <option value="usa">USA</option>
                           <option value="canada">Canada</option>
                         </select>
-                        <input required type="text" placeholder="Preferred Course (e.g. Computer Science)" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
+                        <input name="coursePreference" required type="text" placeholder="Preferred Course (e.g. Computer Science)" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
                       </div>
-                      <input type="text" placeholder="English Test Score (IELTS/TOEFL) - Optional" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
+                      <input name="englishTestInfo" type="text" placeholder="English Test Score (IELTS/TOEFL) - Optional" className="w-full bg-white rounded-2xl px-5 py-4 focus:outline-none ring-1 ring-black/5 focus:ring-primary/20 text-primary font-medium shadow-sm" />
                     </div>
                   )}
 

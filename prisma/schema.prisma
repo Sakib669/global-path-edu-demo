@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// Admin & User Management
+// ==========================================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN") // ADMIN, EDITOR, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==========================================
+// Country Management
+// ==========================================
+model Country {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  image       String?
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  universities University[]
+}
+
+// ==========================================
+// University Management
+// ==========================================
+model University {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  countryId   String
+  location    String?
+  description String?
+  logo        String?
+  image       String?
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  country Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  courses Course[]
+}
+
+// ==========================================
+// Course Management
+// ==========================================
+model Course {
+  id                String   @id @default(uuid())
+  title             String
+  slug              String   @unique
+  universityId      String
+  category          String?  // e.g., Engineering, Business
+  degreeType        String?  // e.g., Bachelor, Master
+  duration          String?  // e.g., 4 Years
+  tuitionFee        String?  // e.g., $20,000 / year
+  intake            String?  // e.g., Fall, Spring
+  requirements      String?
+  englishRequirement String?
+  description       String?
+  published         Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  university University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+}
+
+// ==========================================
+// Inquiry Management
+// ==========================================
+model Inquiry {
+  id               String   @id @default(uuid())
+  name             String
+  email            String
+  phone            String
+  education        String?
+  preferredCountry String?
+  preferredCourse  String?
+  budget           String?
+  message          String?
+  status           String   @default("NEW") // NEW, IN_PROGRESS, RESOLVED, CLOSED
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+// ==========================================
+// Application Management
+// ==========================================
+model Application {
+  id                   String   @id @default(uuid())
+  studentName          String
+  email                String
+  phone                String
+  academicInfo         String?
+  coursePreference     String?
+  universityPreference String?
+  countryPreference    String?
+  englishTestInfo      String?
+  status               String   @default("PENDING") // PENDING, UNDER_REVIEW, ACCEPTED, REJECTED
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+// ==========================================
+// Blog / News
+// ==========================================
+model Post {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  excerpt   String?
+  content   String?
+  image     String?
+  category  String?
+  author    String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
