@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, Facebook, Linkedin, ArrowRight, Bookmark, BookmarkCheck } from "lucide-react";
+import { Phone, Mail, ArrowRight, Bookmark, BookmarkCheck } from "lucide-react";
 
 // --- Seed Data ---
 const DESTINATIONS = [
@@ -50,7 +50,7 @@ const PROCESS_STEPS = [
 // --- Animation Variants ---
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } }
 };
 
 const staggerContainer = {
@@ -66,6 +66,7 @@ export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMounted(true);
     const stored = localStorage.getItem("savedDestinations");
     if (stored) {
@@ -93,8 +94,8 @@ export default function Home() {
           <span className="hidden md:flex items-center gap-2"><Mail size={14} /> info@globalpath.example.com</span>
         </div>
         <div className="flex space-x-4 items-center">
-          <a href="#" className="hover:text-accent transition"><Facebook size={16} /></a>
-          <a href="#" className="hover:text-accent transition"><Linkedin size={16} /></a>
+          <a href="#" className="hover:text-accent transition">Facebook</a>
+          <a href="#" className="hover:text-accent transition">LinkedIn</a>
         </div>
       </div>
 
@@ -133,7 +134,7 @@ export default function Home() {
               Your Journey to <br/>Global Success <span className="text-accent">Starts Here</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg md:text-xl text-gray-200 mb-8 max-w-lg">
-              Expert guidance for studying abroad. From choosing the right course to securing your visa, we're with you every step of the way.
+              Expert guidance for studying abroad. From choosing the right course to securing your visa, we&apos;re with you every step of the way.
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <button className="bg-accent text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-red-700 transition shadow-xl shadow-red-900/20 text-center">
