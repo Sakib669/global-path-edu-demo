@@ -145,7 +145,7 @@ export default function DestinationsPage() {
                   <h2 className="font-heading text-3xl font-bold text-primary mb-4">{dest.name}</h2>
                   <p className="text-gray-600 mb-8 text-lg leading-relaxed">{dest.description}</p>
                   
-                  <div className="grid grid-cols-3 gap-4 mb-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                     <div className="bg-light p-4 rounded-xl text-center border border-gray-50">
                       <div className="text-accent font-bold text-xl mb-1">{dest.stats.universities}</div>
                       <div className="text-xs text-gray-500 font-medium uppercase tracking-wider">Universities</div>
